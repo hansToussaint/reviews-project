@@ -1,3 +1,4 @@
+import "./global.css";
 import { createTheme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
@@ -51,12 +52,12 @@ const theme = createTheme({
       color: COLORS.secondaryText,
     },
     h4: {
-      fontSize: "1.4rem",
+      fontSize: "1.5rem",
       fontWeight: 700,
       color: COLORS.secondaryText,
     },
     h5: {
-      fontSize: "1.7rem",
+      fontSize: "1.4rem",
       fontWeight: 450,
       color: COLORS.secondaryText,
     },
