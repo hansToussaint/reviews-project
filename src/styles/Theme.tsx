@@ -10,7 +10,8 @@ declare module "@mui/material/styles" {
 }
 
 const COLORS = {
-  primary: "#1EB757",
+  //   primary: "#1EB757",
+  primary: "#101311",
   mainBackground: "#F7F9FE",
   secondaryText: "#3F4A60",
   danger: "#FF0000",
@@ -62,9 +63,9 @@ const theme = createTheme({
       color: COLORS.secondaryText,
     },
     body1: {
-      fontSize: "1.55rem",
-      fontWeight: 500,
-      color: "#000000",
+      fontSize: "1.45rem",
+      fontWeight: 400,
+      color: COLORS.secondaryText,
     },
   },
 });

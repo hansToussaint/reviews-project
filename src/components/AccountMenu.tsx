@@ -4,12 +4,13 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import theme from "../styles/Theme";
 import ButtonMini from "./ButtonMini";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router";
 
-interface AccountMenuProps {
-  isAuthenticated: boolean;
-}
+const AccountMenu: React.FC = () => {
+  const { profile, signOutUser } = useAuth();
+  const navigate = useNavigate();
 
-const AccountMenu: React.FC<AccountMenuProps> = ({ isAuthenticated }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,7 +21,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ isAuthenticated }) => {
     setAnchorEl(null);
   };
 
-  return isAuthenticated ? (
+  return profile ? (
     <>
       <Box
         onClick={handleClick}
@@ -69,8 +70,9 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ isAuthenticated }) => {
             cursor: "default",
           }}
         >
-          user@example.com
+          {profile.username}
         </MenuItem>
+
         <MenuItem
           disableRipple
           sx={{
@@ -84,6 +86,10 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ isAuthenticated }) => {
               cursor: "pointer",
             },
           }}
+          onClick={() => {
+            signOutUser();
+            handleClose();
+          }}
         >
           <span>Log out</span>
         </MenuItem>
@@ -93,6 +99,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ isAuthenticated }) => {
     <ButtonMini
       bgColor="transparent"
       BgHover={theme.palette.common.mainBackground}
+      onClick={() => navigate("/signin")}
     >
       Log in
     </ButtonMini>

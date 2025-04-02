@@ -11,6 +11,7 @@ import {
   ListItemButton,
   Container,
   styled,
+  Typography,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -21,8 +22,9 @@ import {
 import Logo from "./Logo";
 import theme from "../styles/Theme";
 import MobileSearchBar from "./MobileSearchBar";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { UnderlineText } from "../styles/Animations";
+import { useAuth } from "../context/AuthContext";
 
 const StyledListButton = styled(ListItemButton)(({ theme }) => ({
   paddingLeft: theme.spacing(4),
@@ -36,6 +38,11 @@ const StyledListButton = styled(ListItemButton)(({ theme }) => ({
 }));
 
 const MobileHeader: React.FC = () => {
+  const { loading, profile, signOutUser } = useAuth();
+  // If "profile" is null. user is not authenticated ***
+
+  const navigate = useNavigate();
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
@@ -70,9 +77,11 @@ const MobileHeader: React.FC = () => {
             <IconButton
               disableRipple
               onClick={toggleDrawer}
-              sx={{ color: "inherit" }}
+              // sx={{ color: "inherit" }}
             >
-              <MenuIcon sx={{ fontSize: "1.8rem" }} />
+              <MenuIcon
+                sx={{ fontSize: "1.8rem", color: theme.palette.common.black }}
+              />
             </IconButton>
 
             {!searchExpanded && (
@@ -88,9 +97,14 @@ const MobileHeader: React.FC = () => {
                 <IconButton
                   disableRipple
                   onClick={handleSearchToggle}
-                  sx={{ color: "inherit" }}
+                  // sx={{ color: "inherit" }}
                 >
-                  <SearchIcon sx={{ fontSize: "1.8rem" }} />
+                  <SearchIcon
+                    sx={{
+                      fontSize: "1.8rem",
+                      color: theme.palette.common.black,
+                    }}
+                  />
                 </IconButton>
               ) : (
                 <MobileSearchBar onClose={() => setSearchExpanded(false)} />
@@ -99,9 +113,11 @@ const MobileHeader: React.FC = () => {
                 disableRipple
                 component={Link}
                 to="/bookmarks"
-                sx={{ color: "inherit" }}
+                // sx={{ color: "inherit" }}
               >
-                <BookmarkBorder sx={{ fontSize: "1.8rem" }} />
+                <BookmarkBorder
+                  sx={{ fontSize: "1.8rem", color: theme.palette.common.black }}
+                />
               </IconButton>
             </Box>
           </Toolbar>
@@ -151,29 +167,62 @@ const MobileHeader: React.FC = () => {
               />
             </ListItem>
 
-            <StyledListButton
-              disableRipple
-              onClick={toggleDrawer}
-              sx={{ userSelect: "none", fontSize: "1.5rem", fontWeight: 200 }}
-            >
-              user@example.com
-            </StyledListButton>
-            <StyledListButton
-              disableRipple
-              onClick={toggleDrawer}
-              sx={{
-                fontSize: "1.4rem",
-                fontWeight: 450,
+            {loading ? (
+              <Typography variant="body1">Loading...</Typography>
+            ) : profile ? (
+              <>
+                <StyledListButton
+                  disableRipple
+                  onClick={toggleDrawer}
+                  sx={{
+                    userSelect: "none",
+                    fontSize: "1.5rem",
+                    fontWeight: 200,
+                  }}
+                >
+                  {profile.username}
+                </StyledListButton>
 
-                "& span": {
-                  cursor: "pointer",
-                  borderBottom: `1px solid ${theme.palette.common.black}`,
-                  transition: "border-bottom 0.3s ease",
-                },
-              }}
-            >
-              <span>Log out</span>
-            </StyledListButton>
+                <StyledListButton
+                  disableRipple
+                  onClick={() => {
+                    signOutUser();
+                    toggleDrawer();
+                  }}
+                  sx={{
+                    fontSize: "1.4rem",
+                    fontWeight: 450,
+
+                    "& span": {
+                      cursor: "pointer",
+                      borderBottom: `1px solid ${theme.palette.common.black}`,
+                      transition: "border-bottom 0.3s ease",
+                    },
+                  }}
+                >
+                  <span>Log out</span>
+                </StyledListButton>
+              </>
+            ) : (
+              <StyledListButton
+                disableRipple
+                onClick={() => {
+                  navigate("/signin");
+                  toggleDrawer();
+                }}
+                sx={{
+                  fontSize: "1.4rem",
+                  fontWeight: 450,
+                  "& span": {
+                    cursor: "pointer",
+                    borderBottom: `1px solid ${theme.palette.common.black}`,
+                    transition: "border-bottom 0.3s ease",
+                  },
+                }}
+              >
+                <span>Sign in</span>
+              </StyledListButton>
+            )}
           </List>
         </Box>
       </Drawer>
