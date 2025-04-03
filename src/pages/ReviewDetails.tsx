@@ -53,7 +53,14 @@ const ReviewDetails: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h1" sx={{ mb: 1, maxWidth: 750 }}>
+      <Typography
+        variant="h1"
+        sx={{
+          maxWidth: 750,
+          mb: { xs: 2, md: 4 },
+          fontSize: { xs: "2rem", md: "4rem", sm: "3rem" },
+        }}
+      >
         {review.title}
       </Typography>
 

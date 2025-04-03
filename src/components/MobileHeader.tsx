@@ -51,6 +51,9 @@ const MobileHeader: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
+  // get the current category to add a style on it
+  const activeCategory = location.pathname.split("/")[2]?.toLowerCase();
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -157,13 +160,54 @@ const MobileHeader: React.FC = () => {
             </ListItem>
 
             <StyledListButton disableRipple onClick={toggleDrawer}>
-              <UnderlineText>Beauty</UnderlineText>
+              <UnderlineText>
+                <Link
+                  style={{
+                    color:
+                      activeCategory === "beauty"
+                        ? theme.palette.common.greenColor
+                        : theme.palette.common.secondaryText,
+                    textDecoration: "none",
+                  }}
+                  to="/categories/Beauty"
+                >
+                  Beauty
+                </Link>
+              </UnderlineText>
             </StyledListButton>
+
             <StyledListButton disableRipple onClick={toggleDrawer}>
-              <UnderlineText>Cars</UnderlineText>
+              <UnderlineText>
+                <Link
+                  style={{
+                    color:
+                      activeCategory === "cars"
+                        ? theme.palette.common.greenColor
+                        : theme.palette.common.secondaryText,
+                    textDecoration: "none",
+                  }}
+                  to="/categories/Cars"
+                >
+                  Cars
+                </Link>
+              </UnderlineText>
             </StyledListButton>
+
             <StyledListButton disableRipple onClick={toggleDrawer}>
-              <UnderlineText>Electronics</UnderlineText>
+              <UnderlineText>
+                <Link
+                  style={{
+                    color:
+                      activeCategory === "electronics"
+                        ? theme.palette.common.greenColor
+                        : theme.palette.common.secondaryText,
+                    textDecoration: "none",
+                  }}
+                  to="/categories/Electronics"
+                >
+                  Electronics
+                </Link>
+              </UnderlineText>
             </StyledListButton>
 
             {/* Section Account */}

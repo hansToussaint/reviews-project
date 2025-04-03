@@ -8,9 +8,12 @@ import SearchBar from "./SearchBar";
 import CategoriesMenu from "./CategoriesMenu";
 import AccountMenu from "./AccountMenu";
 import theme from "../styles/Theme";
+import { useAuth } from "../context/AuthContext";
 
 const DesktopHeader: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+
+  const { profile: currentUser } = useAuth();
 
   const handleScroll = () => {
     setScrolled(window.scrollY > 50);
@@ -55,16 +58,18 @@ const DesktopHeader: React.FC = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <CategoriesMenu />
 
-            <IconButton
-              disableRipple
-              component={Link}
-              to="/bookmarks"
-              sx={{ color: "inherit" }}
-            >
-              <BookmarkBorder
-                sx={{ fontSize: "2rem", color: theme.palette.common.black }}
-              />
-            </IconButton>
+            {currentUser && (
+              <IconButton
+                disableRipple
+                component={Link}
+                to="/bookmarks"
+                sx={{ color: "inherit" }}
+              >
+                <BookmarkBorder
+                  sx={{ fontSize: "2rem", color: theme.palette.common.black }}
+                />
+              </IconButton>
+            )}
 
             <AccountMenu />
           </Box>

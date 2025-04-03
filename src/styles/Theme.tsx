@@ -6,16 +6,17 @@ declare module "@mui/material/styles" {
     mainBackground: string;
     secondaryText: string;
     backgroundGreen: string;
+    greenColor: string;
   }
 }
 
 const COLORS = {
-  //   primary: "#1EB757",
   primary: "#101311",
   mainBackground: "#F7F9FE",
   secondaryText: "#3F4A60",
   danger: "#FF0000",
   backgroundGreen: "rgba(185, 213, 196, 0.2)",
+  greenColor: "#1EB757",
 };
 
 const theme = createTheme({
@@ -26,6 +27,7 @@ const theme = createTheme({
       mainBackground: COLORS.mainBackground,
       secondaryText: COLORS.secondaryText,
       backgroundGreen: COLORS.backgroundGreen,
+      greenColor: COLORS.greenColor,
     },
     primary: {
       main: COLORS.primary,
@@ -43,7 +45,7 @@ const theme = createTheme({
       color: "#000000",
     },
     h2: {
-      fontSize: "2.33rem",
+      fontSize: "2rem",
       fontWeight: 450,
       color: COLORS.primary,
     },

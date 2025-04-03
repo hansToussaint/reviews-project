@@ -1,6 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
-
 import { Review } from "../services/apiReviews";
 import { Link } from "react-router";
 import theme from "../styles/Theme";
@@ -27,29 +26,33 @@ const CardReview: React.FC<CardReviewProps> = ({ review }) => {
         height: { xs: "auto", md: 200 },
       }}
     >
-      {/* Image */}
-      {review.image_urls && review.image_urls.length > 0 ? (
-        <Box
-          sx={{
-            width: { xs: "100%", md: 200 },
-            height: "100%",
-            maxHeight: 200,
-            flexShrink: 0,
-            overflow: "hidden",
-            position: "relative",
-            backgroundColor: "#f0f0f0",
-          }}
-        >
-          {/* Skeleton visible if no image yet*/}
-          {!isLoaded && (
-            <Skeleton
-              variant="rectangular"
-              width="100%"
-              height="100%"
-              animation="wave"
-            />
-          )}
+      {/* Image container */}
+      <Box
+        sx={{
+          width: { xs: "100%", md: 200 },
+          height: { xs: 200, md: "100%" },
+          flexShrink: 0,
+          overflow: "hidden",
+          position: "relative",
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        {/*showing the skeleton until the image loaded */}
+        {!isLoaded && (
+          <Skeleton
+            variant="rectangular"
+            animation="wave"
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        )}
 
+        {review.image_urls && review.image_urls.length > 0 ? (
           <img
             src={review.image_urls[0]}
             alt={`Image for ${review.title}`}
@@ -63,10 +66,26 @@ const CardReview: React.FC<CardReviewProps> = ({ review }) => {
               transition: "opacity 0.5s ease-in-out",
             }}
           />
-        </Box>
-      ) : null}
+        ) : (
+          // Fallback if there is no image
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#e0e0e0",
+            }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              No image available
+            </Typography>
+          </Box>
+        )}
+      </Box>
 
-      {/* Content */}
+      {/* review Content */}
       <Box
         sx={{
           p: { xs: 2, md: 3 },
@@ -90,7 +109,6 @@ const CardReview: React.FC<CardReviewProps> = ({ review }) => {
           sx={{
             mb: 1.5,
             fontSize: "1.3rem",
-
             "& span": {
               fontWeight: 600,
               color: theme.palette.common.black,

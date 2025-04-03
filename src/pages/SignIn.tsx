@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { Box, TextField, Button, Typography } from "@mui/material";
+
 import { useSignIn } from "../hooks/useAuthActions";
 import SpinnerMini from "../components/SpinnerMini";
 
@@ -68,6 +70,13 @@ const SignIn: React.FC = () => {
       >
         {isLoadingSignIn ? <SpinnerMini /> : "Sign In"}
       </Button>
+
+      <Typography sx={{ mt: 2, textAlign: "center", fontSize: "1.2rem" }}>
+        Don't have an account yet?{" "}
+        <Link to="/signup" style={{ color: "#1EB757", textDecoration: "none" }}>
+          Sign up
+        </Link>
+      </Typography>
     </Box>
   );
 };

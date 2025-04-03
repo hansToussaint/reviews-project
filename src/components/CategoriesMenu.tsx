@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Box, Typography, Menu, MenuItem, styled } from "@mui/material";
 import { UnderlineText } from "../styles/Animations";
+import { Link, useLocation } from "react-router";
+import theme from "../styles/Theme";
 
 const StyledMenuItem = styled(MenuItem)(() => ({
   marginBottom: "0.8rem",
@@ -12,6 +14,11 @@ const StyledMenuItem = styled(MenuItem)(() => ({
 
 const CategoriesMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const location = useLocation();
+
+  // get the current category to add a style on it
+  const activeCategory = location.pathname.split("/")[2]?.toLowerCase();
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -63,13 +70,54 @@ const CategoriesMenu: React.FC = () => {
         disableScrollLock
       >
         <StyledMenuItem disableRipple onClick={handleClose}>
-          <UnderlineText>Beauty</UnderlineText>
+          <UnderlineText>
+            <Link
+              style={{
+                color:
+                  activeCategory === "beauty"
+                    ? theme.palette.common.greenColor
+                    : theme.palette.common.secondaryText,
+                textDecoration: "none",
+              }}
+              to="/categories/Beauty"
+            >
+              Beauty
+            </Link>
+          </UnderlineText>
         </StyledMenuItem>
+
         <StyledMenuItem disableRipple onClick={handleClose}>
-          <UnderlineText>Cars</UnderlineText>
+          <UnderlineText>
+            <Link
+              style={{
+                color:
+                  activeCategory === "cars"
+                    ? theme.palette.common.greenColor
+                    : theme.palette.common.secondaryText,
+                textDecoration: "none",
+              }}
+              to="/categories/Cars"
+            >
+              Cars
+            </Link>
+          </UnderlineText>
         </StyledMenuItem>
+
         <StyledMenuItem disableRipple onClick={handleClose}>
-          <UnderlineText>Electronics</UnderlineText>
+          <UnderlineText>
+            <Link
+              style={{
+                color:
+                  activeCategory === "electronics"
+                    ? theme.palette.common.greenColor
+                    : theme.palette.common.secondaryText,
+                textDecoration: "none",
+              }}
+              to="/categories/Electronics"
+            >
+              Electronics
+            </Link>
+          </UnderlineText>
         </StyledMenuItem>
       </Menu>
     </Box>

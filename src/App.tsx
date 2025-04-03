@@ -14,6 +14,7 @@ import CreateReview from "./pages/CreateReview";
 import Home from "./pages/Home";
 import { AuthProvider } from "./context/AuthContext";
 import BookmarkPage from "./pages/Bookmarks";
+import CategoriesPage from "./pages/CategoriesPage";
 
 const App: React.FC = () => {
   const queryClient = new QueryClient({
@@ -42,6 +43,10 @@ const App: React.FC = () => {
                 <Route path="/reviews/:reviewId" element={<ReviewDetails />} />
                 <Route path="/create" element={<CreateReview />} />
                 <Route path="/bookmarks" element={<BookmarkPage />} />
+                <Route
+                  path="/categories/:category"
+                  element={<CategoriesPage />}
+                />
               </Route>
 
               <Route element={<AuthLayout />}>
