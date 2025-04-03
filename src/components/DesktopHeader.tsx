@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import CategoriesMenu from "./CategoriesMenu";
 import AccountMenu from "./AccountMenu";
+import theme from "../styles/Theme";
 
 const DesktopHeader: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -60,10 +61,12 @@ const DesktopHeader: React.FC = () => {
               to="/bookmarks"
               sx={{ color: "inherit" }}
             >
-              <BookmarkBorder sx={{ fontSize: "2rem" }} />
+              <BookmarkBorder
+                sx={{ fontSize: "2rem", color: theme.palette.common.black }}
+              />
             </IconButton>
 
-            <AccountMenu isAuthenticated={true} />
+            <AccountMenu />
           </Box>
         </Toolbar>
       </Container>

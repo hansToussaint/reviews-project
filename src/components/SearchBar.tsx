@@ -21,7 +21,7 @@ const SearchBar: React.FC = () => {
         transition: "background-color 0.3s ease",
       }}
     >
-      <Search />
+      <Search sx={{ color: theme.palette.common.black }} />
       <InputBase
         placeholder="Search a review..."
         onFocus={() => setActive(true)}

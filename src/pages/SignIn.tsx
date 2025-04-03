@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import { useSignIn } from "../hooks/useAuthActions";
+import SpinnerMini from "../components/SpinnerMini";
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { isLoading: isLoadingSignIn, mutateSignIn } = useSignIn();
+
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("12345678");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign in", { email, password });
+    mutateSignIn({ email, password });
   };
 
   return (
@@ -15,6 +19,7 @@ const SignIn: React.FC = () => {
       <Typography variant="h5" sx={{ mb: 2, textAlign: "center" }}>
         Sign In
       </Typography>
+
       <TextField
         label="Email"
         type="email"
@@ -51,6 +56,7 @@ const SignIn: React.FC = () => {
           },
         }}
       />
+
       <Button
         disableRipple
         type="submit"
@@ -60,7 +66,7 @@ const SignIn: React.FC = () => {
           width: "fit-content",
         }}
       >
-        Sign In
+        {isLoadingSignIn ? <SpinnerMini /> : "Sign In"}
       </Button>
     </Box>
   );

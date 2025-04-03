@@ -5,11 +5,16 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import theme from "../styles/Theme";
 import ButtonMini from "./ButtonMini";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { useSignOut } from "../hooks/useAuthActions";
+import SpinnerMini from "./SpinnerMini";
 
 const AccountMenu: React.FC = () => {
-  const { profile, signOutUser } = useAuth();
+  const { profile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { isLoading: isLoadingSignOut, mutateSignOut } = useSignOut();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -34,7 +39,11 @@ const AccountMenu: React.FC = () => {
         }}
       >
         <Typography variant="h5">Account</Typography>
-        {anchorEl ? <ExpandLess /> : <ExpandMore />}
+        {anchorEl ? (
+          <ExpandLess sx={{ color: theme.palette.common.black }} />
+        ) : (
+          <ExpandMore sx={{ color: theme.palette.common.black }} />
+        )}
       </Box>
 
       <Menu
@@ -87,11 +96,11 @@ const AccountMenu: React.FC = () => {
             },
           }}
           onClick={() => {
-            signOutUser();
+            mutateSignOut(location.pathname);
             handleClose();
           }}
         >
-          <span>Log out</span>
+          {isLoadingSignOut ? <SpinnerMini /> : <span>Sign out</span>}
         </MenuItem>
       </Menu>
     </>
@@ -99,9 +108,12 @@ const AccountMenu: React.FC = () => {
     <ButtonMini
       bgColor="transparent"
       BgHover={theme.palette.common.mainBackground}
-      onClick={() => navigate("/signin")}
+      // onClick={() => navigate("/signin")}
+      onClick={() =>
+        navigate("/signin", { state: { from: location.pathname } })
+      }
     >
-      Log in
+      Sign in
     </ButtonMini>
   );
 };

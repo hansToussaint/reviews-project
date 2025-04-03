@@ -37,14 +37,14 @@ const theme = createTheme({
   typography: {
     fontFamily: "inherit",
     h1: {
-      fontSize: "2.5rem",
+      fontSize: "4rem",
       fontWeight: 700,
       letterSpacing: "0.4px",
       color: "#000000",
     },
     h2: {
       fontSize: "2.33rem",
-      fontWeight: 500,
+      fontWeight: 450,
       color: COLORS.primary,
     },
     h3: {

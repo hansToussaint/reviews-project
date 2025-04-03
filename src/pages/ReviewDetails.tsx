@@ -1,38 +1,138 @@
 import { useParams } from "react-router";
+import { Box, Typography } from "@mui/material";
+
+import useReview from "../hooks/useReview";
 import useComments from "../hooks/useComments";
 import Spinner from "../components/Spinner";
-import { Typography } from "@mui/material";
+import UserAvatar from "../components/UserAvatar";
+import ReviewRating from "../components/ReviewRating";
 import CommentsSection from "../components/CommentsSection";
+import theme from "../styles/Theme";
+import useProfile from "../hooks/useProfile";
+import ImageDisplay from "../components/ImageDisplay";
+import { useAuth } from "../context/AuthContext";
+import BookmarkButton from "../components/BookmarkButton";
 
 const ReviewDetails: React.FC = () => {
   const { reviewId } = useParams<{ reviewId: string }>();
 
   const {
+    review,
+    isLoading: isLoadingReview,
+    error: reviewError,
+  } = useReview(reviewId!);
+
+  // get comments
+  const {
     isLoading: isLoadingComments,
     comments,
-    error,
-  } = useComments(reviewId);
+    error: commentsError,
+  } = useComments(reviewId!);
 
-  if (isLoadingComments) {
+  // Get the info about the author
+  const { profile: authorProfile, isLoading: isAuthorLoading } = useProfile(
+    review?.user_id ?? ""
+  );
+
+  // currentUser profile
+  const { profile: currentUser } = useAuth();
+
+  if (isLoadingReview || isLoadingComments) {
     return <Spinner />;
   }
 
-  if (error) {
+  if (!review) return <p>Review is not found</p>;
+
+  if (reviewError || commentsError) {
     return (
       <Typography variant="h2" color="error" sx={{ mt: 4 }}>
-        Error loading comments.
+        Error loading review.
       </Typography>
     );
   }
 
   return (
-    <>
-      <Typography variant="h4" sx={{ mb: 4 }}>
-        Review Details
+    <Box>
+      <Typography variant="h1" sx={{ mb: 1, maxWidth: 750 }}>
+        {review.title}
       </Typography>
-      {/* Affichage des détails de la review... */}
+
+      {/* Publish Date */}
+      <Typography
+        variant="body1"
+        sx={{ mb: 2, color: theme.palette.common.secondaryText }}
+      >
+        Published{" "}
+        {new Date(review.created_at).toLocaleDateString(undefined, {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </Typography>
+
+      {/* Review Image */}
+      {review.image_urls && review.image_urls.length > 0 && (
+        <ImageDisplay src={review.image_urls[0]} alt="Review image" />
+      )}
+
+      {/* Author and rating */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {isAuthorLoading ? (
+            <Typography variant="subtitle2">Loading...</Typography>
+          ) : (
+            <>
+              <UserAvatar
+                src={authorProfile?.avatar_url}
+                name={authorProfile?.username || review.user_id}
+                size={40}
+              />
+              <Typography variant="h5">
+                {authorProfile?.username || review.user_id}
+              </Typography>
+            </>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-start", md: "center" },
+            gap: 2,
+          }}
+        >
+          {currentUser && <BookmarkButton reviewId={Number(reviewId)} />}
+
+          <ReviewRating reviewId={Number(reviewId)} />
+        </Box>
+      </Box>
+
+      {/* Review Content */}
+      <Typography
+        variant="body1"
+        sx={{
+          mt: 5,
+          mb: 6,
+          lineHeight: 1.6,
+          maxWidth: 750,
+          whiteSpace: "pre-line",
+        }}
+      >
+        {review.content}
+      </Typography>
+
+      {/* Comments section  */}
       <CommentsSection comments={comments || []} reviewId={reviewId!} />
-    </>
+    </Box>
   );
 };
 

@@ -7,9 +7,9 @@ const useComments = (reviewId: string) => {
     isLoading,
     error,
   } = useQuery<Comment[], Error>({
-    queryKey: ["comments", reviewId], // Clé unique pour chaque review
-    queryFn: () => fetchComments(reviewId), // Fonction de récupération des comments
-    enabled: !!reviewId, // Empêche la requête si reviewId est null ou undefined
+    queryKey: ["comments", reviewId],
+    queryFn: () => fetchComments(reviewId),
+    enabled: !!reviewId,
   });
 
   return { comments, isLoading, error };

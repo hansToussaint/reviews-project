@@ -1,6 +1,7 @@
-import { Avatar, CircularProgress } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { useState } from "react";
 import theme from "../styles/Theme";
+import SpinnerMini from "./SpinnerMini";
 
 interface UserAvatarProps {
   src?: string;
@@ -48,17 +49,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ src, name, size = 40 }) => {
       )}
 
       {/* adding a spinner while loading */}
-      {src && !loaded && (
-        <CircularProgress
-          size={size * 0.6}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
-      )}
+      {src && !loaded && <SpinnerMini />}
     </Avatar>
   );
 };

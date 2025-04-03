@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCurrentUser, Profile, signOut } from "../services/authService";
+import { getCurrentUser, Profile } from "../services/authService";
 
 interface AuthContextProps {
   profile: Profile | null;
   setProfile: React.Dispatch<React.SetStateAction<Profile | null>>;
   loading: boolean;
-  signOutUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -32,13 +31,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     loadUser();
   }, []);
 
-  const signOutUser = async () => {
-    await signOut();
-    setProfile(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ profile, setProfile, loading, signOutUser }}>
+    <AuthContext.Provider value={{ profile, setProfile, loading }}>
       {children}
     </AuthContext.Provider>
   );

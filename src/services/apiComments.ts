@@ -26,7 +26,7 @@ export interface LikeDislikeData {
   type: 1 | -1; // 1 for like, -1 for dislike
 }
 
-// 🔹 Récupérer tous les commentaires d'un review avec leurs likes et replies
+// get comments for a review with likes and replies
 export async function fetchComments(reviewId: string): Promise<Comment[]> {
   const { data, error } = await supabase
     .from("comments")
@@ -42,7 +42,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
     throw error;
   }
 
-  // Regrouper les likes et dislikes
+  // Group likes & dislikes
   const commentsMap = new Map<string, Comment>();
 
   data.forEach((comment) => {
@@ -61,7 +61,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
     });
   });
 
-  // Organiser les replies sous leurs commentaires principaux
+  // Organize replies under their comments
   const commentsList: Comment[] = [];
 
   commentsMap.forEach((comment) => {
@@ -78,7 +78,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
   return commentsList;
 }
 
-// 🔹 Créer un commentaire ou un reply
+// create a comment or reply
 export async function createComment(
   commentData: CreateCommentData
 ): Promise<Comment> {
@@ -95,7 +95,7 @@ export async function createComment(
   return data;
 }
 
-// 🔹 Supprimer un commentaire (si l'utilisateur est le propriétaire)
+// delete comment (only for own user)
 export async function deleteComment(
   commentId: string,
   userId: string
@@ -111,13 +111,13 @@ export async function deleteComment(
   }
 }
 
-// 🔹 Liker ou disliker un commentaire (ou annuler si déjà fait)
+// like/dislke comment (or delete)
 export async function toggleLikeDislike({
   user_id,
   comment_id,
   type,
 }: LikeDislikeData): Promise<void> {
-  // Vérifier si l'utilisateur a déjà liké/disliké ce commentaire
+  // verifying is the user already liked/disliked the current comment
   const { data, error } = await supabase
     .from("comment_likes")
     .select("*")
@@ -130,15 +130,15 @@ export async function toggleLikeDislike({
   }
 
   if (data) {
-    // Si le même type de like/dislike est déjà fait, on l'annule
+    // if same type, ddelete the like/dislike
     if (data.type === type) {
       await supabase.from("comment_likes").delete().eq("id", data.id);
     } else {
-      // Sinon, on met à jour le type
+      // otherwise, update type
       await supabase.from("comment_likes").update({ type }).eq("id", data.id);
     }
   } else {
-    // Sinon, on ajoute un nouveau like/dislike
+    // or add a new like/dislike
     await supabase
       .from("comment_likes")
       .insert([{ user_id, comment_id, type }]);

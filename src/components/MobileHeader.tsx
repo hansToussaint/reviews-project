@@ -22,9 +22,10 @@ import {
 import Logo from "./Logo";
 import theme from "../styles/Theme";
 import MobileSearchBar from "./MobileSearchBar";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { UnderlineText } from "../styles/Animations";
 import { useAuth } from "../context/AuthContext";
+import { useSignOut } from "../hooks/useAuthActions";
 
 const StyledListButton = styled(ListItemButton)(({ theme }) => ({
   paddingLeft: theme.spacing(4),
@@ -38,8 +39,12 @@ const StyledListButton = styled(ListItemButton)(({ theme }) => ({
 }));
 
 const MobileHeader: React.FC = () => {
-  const { loading, profile, signOutUser } = useAuth();
+  const location = useLocation();
+
   // If "profile" is null. user is not authenticated ***
+
+  const { loading: isloadingProfile, profile } = useAuth();
+  const { mutateSignOut } = useSignOut();
 
   const navigate = useNavigate();
 
@@ -109,16 +114,22 @@ const MobileHeader: React.FC = () => {
               ) : (
                 <MobileSearchBar onClose={() => setSearchExpanded(false)} />
               )}
-              <IconButton
-                disableRipple
-                component={Link}
-                to="/bookmarks"
-                // sx={{ color: "inherit" }}
-              >
-                <BookmarkBorder
-                  sx={{ fontSize: "1.8rem", color: theme.palette.common.black }}
-                />
-              </IconButton>
+
+              {profile && (
+                <IconButton
+                  disableRipple
+                  component={Link}
+                  to="/bookmarks"
+                  // sx={{ color: "inherit" }}
+                >
+                  <BookmarkBorder
+                    sx={{
+                      fontSize: "1.8rem",
+                      color: theme.palette.common.black,
+                    }}
+                  />
+                </IconButton>
+              )}
             </Box>
           </Toolbar>
         </Container>
@@ -167,7 +178,7 @@ const MobileHeader: React.FC = () => {
               />
             </ListItem>
 
-            {loading ? (
+            {isloadingProfile ? (
               <Typography variant="body1">Loading...</Typography>
             ) : profile ? (
               <>
@@ -186,7 +197,7 @@ const MobileHeader: React.FC = () => {
                 <StyledListButton
                   disableRipple
                   onClick={() => {
-                    signOutUser();
+                    mutateSignOut(location.pathname);
                     toggleDrawer();
                   }}
                   sx={{
@@ -200,14 +211,15 @@ const MobileHeader: React.FC = () => {
                     },
                   }}
                 >
-                  <span>Log out</span>
+                  <span>Sign out</span>
                 </StyledListButton>
               </>
             ) : (
               <StyledListButton
                 disableRipple
                 onClick={() => {
-                  navigate("/signin");
+                  // navigate("/signin");
+                  navigate("/signin", { state: { from: location.pathname } });
                   toggleDrawer();
                 }}
                 sx={{

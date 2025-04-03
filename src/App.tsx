@@ -12,8 +12,8 @@ import MainLayout from "./layouts/MainLayout";
 import ReviewDetails from "./pages/ReviewDetails";
 import CreateReview from "./pages/CreateReview";
 import Home from "./pages/Home";
-import { Bookmark } from "@mui/icons-material";
 import { AuthProvider } from "./context/AuthContext";
+import BookmarkPage from "./pages/Bookmarks";
 
 const App: React.FC = () => {
   const queryClient = new QueryClient({
@@ -41,7 +41,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/reviews/:reviewId" element={<ReviewDetails />} />
                 <Route path="/create" element={<CreateReview />} />
-                <Route path="/bookmark" element={<Bookmark />} />
+                <Route path="/bookmarks" element={<BookmarkPage />} />
               </Route>
 
               <Route element={<AuthLayout />}>

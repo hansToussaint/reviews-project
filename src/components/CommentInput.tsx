@@ -3,7 +3,7 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 import UserAvatar from "./UserAvatar";
 import theme from "../styles/Theme";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface CommentInputProps {
   placeholder?: string;
@@ -22,6 +22,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   parentId = null,
   onSubmit,
 }) => {
+  const location = useLocation();
   const { profile: user } = useAuth();
 
   const [commentText, setCommentText] = useState("");
@@ -75,13 +76,22 @@ const CommentInput: React.FC<CommentInputProps> = ({
           </Box>
         </Box>
       ) : (
-        <Typography variant="body1" sx={{ mt: 2, fontStyle: "italic" }}>
+        <Typography
+          variant="body1"
+          sx={{
+            mt: 2,
+            fontStyle: "italic",
+            color: "#3ac141",
+            fontWeight: 700,
+          }}
+        >
           Please{" "}
           <Link
             to="/signin"
+            state={{ from: location.pathname }}
             style={{
               textDecoration: "none",
-              color: theme.palette.common.secondaryText,
+              color: "#2d9833",
               borderBottom: `1px solid ${theme.palette.common.black}`,
             }}
           >

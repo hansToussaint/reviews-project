@@ -1,18 +1,17 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-export default function Spinner() {
+export default function SpinnerMini() {
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        width: "100%",
+        padding: "0.3rem 0.8rem",
       }}
     >
-      <CircularProgress color="success" />
+      <CircularProgress size={20} color="inherit" />
     </Box>
   );
 }

@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import { useSignUp } from "../hooks/useAuthActions";
+import SpinnerMini from "../components/SpinnerMini";
 
 const SignUp: React.FC = () => {
-  const [name, setName] = useState("");
+  const { isLoading: isLoadingSignUp, mutateSignUp } = useSignUp();
+
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign up", { name, email, password });
+    mutateSignUp({ email, password, username });
   };
 
   return (
@@ -22,8 +26,8 @@ const SignUp: React.FC = () => {
         required
         slotProps={{ inputLabel: { required: false } }}
         margin="normal"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         size="small"
         fullWidth
         sx={{
@@ -82,7 +86,7 @@ const SignUp: React.FC = () => {
           width: "fit-content",
         }}
       >
-        Sign Up
+        {isLoadingSignUp ? <SpinnerMini /> : "Sign Up"}
       </Button>
     </Box>
   );
