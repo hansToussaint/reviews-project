@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 import useReview from "../hooks/useReview";
 import useComments from "../hooks/useComments";
@@ -9,9 +9,8 @@ import ReviewRating from "../components/ReviewRating";
 import CommentsSection from "../components/CommentsSection";
 import theme from "../styles/Theme";
 import useProfile from "../hooks/useProfile";
-import ImageDisplay from "../components/ImageDisplay";
-import { useAuth } from "../context/AuthContext";
 import BookmarkButton from "../components/BookmarkButton";
+import ImageWithSkeleton from "../components/ImageWithSkeleton";
 
 const ReviewDetails: React.FC = () => {
   const { reviewId } = useParams<{ reviewId: string }>();
@@ -34,9 +33,19 @@ const ReviewDetails: React.FC = () => {
     review?.user_id ?? ""
   );
 
-  // currentUser profile
-  const { profile: currentUser } = useAuth();
+  // responsive
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
+  let aspectRatio = "1.8 / 2";
+
+  if (isMdUp) {
+    aspectRatio = "4 / 2";
+  } else if (isSmUp) {
+    aspectRatio = "16 / 9";
+  }
+
+  //
   if (isLoadingReview || isLoadingComments) {
     return <Spinner />;
   }
@@ -79,7 +88,13 @@ const ReviewDetails: React.FC = () => {
 
       {/* Review Image */}
       {review.image_urls && review.image_urls.length > 0 && (
-        <ImageDisplay src={review.image_urls[0]} alt="Review image" />
+        <Box sx={{ mb: 2 }}>
+          <ImageWithSkeleton
+            src={review.image_urls[0]}
+            alt="Review image"
+            aspectRatio={aspectRatio}
+          />
+        </Box>
       )}
 
       {/* Author and rating */}
@@ -117,7 +132,7 @@ const ReviewDetails: React.FC = () => {
             gap: 2,
           }}
         >
-          {currentUser && <BookmarkButton reviewId={Number(reviewId)} />}
+          <BookmarkButton reviewId={Number(reviewId)} />
 
           <ReviewRating reviewId={Number(reviewId)} />
         </Box>

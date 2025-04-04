@@ -9,6 +9,7 @@ import {
   deleteBookmark,
   checkReviewBookmarked,
 } from "../services/apiBookmarks";
+import { useLocation, useNavigate } from "react-router";
 
 interface BookmarkButtonProps {
   reviewId: number;
@@ -16,8 +17,11 @@ interface BookmarkButtonProps {
 
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({ reviewId }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { profile } = useAuth();
+
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   // Fetch the bookmark status for the review
@@ -66,6 +70,10 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ reviewId }) => {
 
   // Toggle bookmark
   const toggleBookmark = () => {
+    if (!profile) {
+      navigate("/signin", { state: { from: location.pathname } });
+    }
+
     if (isBookmarked) {
       mutateDeleteBookmark(reviewId);
     } else {

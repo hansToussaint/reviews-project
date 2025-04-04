@@ -50,9 +50,9 @@ const theme = createTheme({
       color: COLORS.primary,
     },
     h3: {
-      fontSize: "1.5rem",
-      fontWeight: 400,
-      color: COLORS.secondaryText,
+      fontSize: "1.6rem",
+      fontWeight: 500,
+      color: "#0000000",
     },
     h4: {
       fontSize: "1.5rem",

@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import { AuthProvider } from "./context/AuthContext";
 import BookmarkPage from "./pages/Bookmarks";
 import CategoriesPage from "./pages/CategoriesPage";
+import SearchPage from "./pages/SearchPage";
 
 const App: React.FC = () => {
   const queryClient = new QueryClient({
@@ -47,6 +48,7 @@ const App: React.FC = () => {
                   path="/categories/:category"
                   element={<CategoriesPage />}
                 />
+                <Route path="/search" element={<SearchPage />} />
               </Route>
 
               <Route element={<AuthLayout />}>

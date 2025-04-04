@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Box, InputBase } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
@@ -6,6 +7,16 @@ import theme from "../styles/Theme";
 
 const SearchBar: React.FC = () => {
   const [active, setActive] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchTerm.trim() !== "") {
+      // Redirect with the query param
+      navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
 
   return (
     <Box
@@ -27,6 +38,9 @@ const SearchBar: React.FC = () => {
         placeholder="Search a review..."
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyDown}
         sx={{
           marginLeft: 1,
           width: "100%",

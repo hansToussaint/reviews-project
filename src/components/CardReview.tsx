@@ -1,19 +1,27 @@
-import React, { useState } from "react";
-import { Box, Typography, Skeleton } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+
 import { Review } from "../services/apiReviews";
 import { Link } from "react-router";
 import theme from "../styles/Theme";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 
 interface CardReviewProps {
   review: Review;
 }
 
 const CardReview: React.FC<CardReviewProps> = ({ review }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  // for responsive image
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  // const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const handleImageLoad = () => {
-    setIsLoaded(true);
-  };
+  let aspectRatio = "2 / 1"; // xs par défaut
+
+  if (isMdUp) {
+    aspectRatio = "3 / 3";
+  }
+  // else if (isSmUp) {
+  //   aspectRatio = "16 / 9";
+  // }
 
   return (
     <Box
@@ -27,62 +35,16 @@ const CardReview: React.FC<CardReviewProps> = ({ review }) => {
       }}
     >
       {/* Image container */}
-      <Box
-        sx={{
-          width: { xs: "100%", md: 200 },
-          height: { xs: 200, md: "100%" },
-          flexShrink: 0,
-          overflow: "hidden",
-          position: "relative",
-          backgroundColor: "#f0f0f0",
-        }}
-      >
-        {/*showing the skeleton until the image loaded */}
-        {!isLoaded && (
-          <Skeleton
-            variant="rectangular"
-            animation="wave"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        )}
-
-        {review.image_urls && review.image_urls.length > 0 ? (
-          <img
-            src={review.image_urls[0]}
-            alt={`Image for ${review.title}`}
-            onLoad={handleImageLoad}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              display: isLoaded ? "block" : "none",
-              transition: "opacity 0.5s ease-in-out",
-            }}
-          />
-        ) : (
-          // Fallback if there is no image
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#e0e0e0",
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              No image available
-            </Typography>
-          </Box>
-        )}
+      <Box sx={{ width: { xs: "100%", md: 200 }, flexShrink: 0 }}>
+        <ImageWithSkeleton
+          src={
+            review.image_urls && review.image_urls.length > 0
+              ? review.image_urls[0]
+              : undefined
+          }
+          alt={`Image for ${review.title}`}
+          aspectRatio={aspectRatio}
+        />
       </Box>
 
       {/* review Content */}

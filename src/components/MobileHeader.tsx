@@ -159,13 +159,17 @@ const MobileHeader: React.FC = () => {
               />
             </ListItem>
 
-            <StyledListButton disableRipple onClick={toggleDrawer}>
+            <StyledListButton
+              disabled={activeCategory === "beauty"}
+              disableRipple
+              onClick={toggleDrawer}
+            >
               <UnderlineText>
                 <Link
                   style={{
                     color:
                       activeCategory === "beauty"
-                        ? theme.palette.common.greenColor
+                        ? theme.palette.common.black
                         : theme.palette.common.secondaryText,
                     textDecoration: "none",
                   }}
@@ -176,13 +180,17 @@ const MobileHeader: React.FC = () => {
               </UnderlineText>
             </StyledListButton>
 
-            <StyledListButton disableRipple onClick={toggleDrawer}>
+            <StyledListButton
+              disabled={activeCategory === "cars"}
+              disableRipple
+              onClick={toggleDrawer}
+            >
               <UnderlineText>
                 <Link
                   style={{
                     color:
                       activeCategory === "cars"
-                        ? theme.palette.common.greenColor
+                        ? theme.palette.common.black
                         : theme.palette.common.secondaryText,
                     textDecoration: "none",
                   }}
@@ -193,13 +201,17 @@ const MobileHeader: React.FC = () => {
               </UnderlineText>
             </StyledListButton>
 
-            <StyledListButton disableRipple onClick={toggleDrawer}>
+            <StyledListButton
+              disabled={activeCategory === "electronics"}
+              disableRipple
+              onClick={toggleDrawer}
+            >
               <UnderlineText>
                 <Link
                   style={{
                     color:
                       activeCategory === "electronics"
-                        ? theme.palette.common.greenColor
+                        ? theme.palette.common.black
                         : theme.palette.common.secondaryText,
                     textDecoration: "none",
                   }}

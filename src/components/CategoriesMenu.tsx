@@ -69,13 +69,18 @@ const CategoriesMenu: React.FC = () => {
         }}
         disableScrollLock
       >
-        <StyledMenuItem disableRipple onClick={handleClose}>
+        <StyledMenuItem
+          disabled={activeCategory === "beauty"}
+          disableRipple
+          onClick={handleClose}
+        >
           <UnderlineText>
             <Link
               style={{
+                fontWeight: activeCategory === "beauty" ? 500 : 400,
                 color:
                   activeCategory === "beauty"
-                    ? theme.palette.common.greenColor
+                    ? theme.palette.common.black
                     : theme.palette.common.secondaryText,
                 textDecoration: "none",
               }}
@@ -86,13 +91,18 @@ const CategoriesMenu: React.FC = () => {
           </UnderlineText>
         </StyledMenuItem>
 
-        <StyledMenuItem disableRipple onClick={handleClose}>
+        <StyledMenuItem
+          disabled={activeCategory === "cars"}
+          disableRipple
+          onClick={handleClose}
+        >
           <UnderlineText>
             <Link
               style={{
+                fontWeight: activeCategory === "cars" ? 500 : 400,
                 color:
                   activeCategory === "cars"
-                    ? theme.palette.common.greenColor
+                    ? theme.palette.common.black
                     : theme.palette.common.secondaryText,
                 textDecoration: "none",
               }}
@@ -103,13 +113,18 @@ const CategoriesMenu: React.FC = () => {
           </UnderlineText>
         </StyledMenuItem>
 
-        <StyledMenuItem disableRipple onClick={handleClose}>
+        <StyledMenuItem
+          disabled={activeCategory === "electronics"}
+          disableRipple
+          onClick={handleClose}
+        >
           <UnderlineText>
             <Link
               style={{
+                fontWeight: activeCategory === "electronics" ? 500 : 400,
                 color:
                   activeCategory === "electronics"
-                    ? theme.palette.common.greenColor
+                    ? theme.palette.common.black
                     : theme.palette.common.secondaryText,
                 textDecoration: "none",
               }}

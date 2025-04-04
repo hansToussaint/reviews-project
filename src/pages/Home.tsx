@@ -1,134 +1,51 @@
 import React from "react";
-import useReviews from "../hooks/useReviews";
-import { Link } from "react-router";
-
+import { Box, Typography } from "@mui/material";
+import theme from "../styles/Theme";
+import CardCategoryHomePage from "../components/CardCategoryHomePage";
 const Home: React.FC = () => {
-  const {
-    reviews,
-    isLoading: reviewsLoading,
-    error: reviewsError,
-  } = useReviews();
-
-  if (reviewsLoading) return <div>Loading reviews...</div>;
-  if (reviewsError) return <div>Error: {reviewsError.message}</div>;
-
   return (
-    <div>
-      <h1>Reviews</h1>
-      {reviews?.map((review) => (
-        <div
-          key={review.id}
+    <Box>
+      {/* Main Image */}
+      <Box
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          maxHeight: "80vh",
+        }}
+      >
+        <img
+          src="/mainImage.jpg"
+          alt="Main banner"
           style={{
-            marginBottom: "2rem",
-            borderBottom: "1px solid #ddd",
-            paddingBottom: "1rem",
+            width: "100%",
+            display: "block",
+            objectFit: "cover",
+          }}
+        />
+      </Box>
+
+      {/* Text */}
+      <Box sx={{ textAlign: "center", my: 3 }}>
+        <Typography
+          variant="h2"
+          sx={{
+            color: theme.palette.text.primary,
+            fontWeight: 700,
+            fontSize: { xs: "1.8rem", md: "2.5rem" },
           }}
         >
-          <h2>
-            <Link
-              to={`/reviews/${review.id}`}
-              style={{
-                textDecoration: "none",
-                color: "blue",
-                cursor: "pointer",
-              }}
-            >
-              {review.title}
-            </Link>
-          </h2>
+          Each review is a voice, each voice helps shape the world
+        </Typography>
+      </Box>
 
-          {/* Affichage du contenu avec séparation des paragraphes */}
-          {review.content.split("\n\n").map((paragraph, index) => (
-            <p key={index} style={{ marginBottom: "1rem" }}>
-              {paragraph}
-            </p>
-          ))}
+      {/* Section with categories */}
+      <CardCategoryHomePage category="Beauty" />
 
-          {/* Vérifier si imageUrls existe avant d'afficher les images */}
-          {review.image_urls && review.image_urls.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                gap: "1rem",
-                flexWrap: "wrap",
-                marginTop: "1rem",
-              }}
-            >
-              {review.image_urls.map((imageUrl, index) => (
-                <img
-                  key={index}
-                  src={imageUrl}
-                  alt={`Review ${review.title} - ${index + 1}`}
-                  style={{
-                    width: "200px",
-                    height: "auto",
-                    borderRadius: "8px",
-                    objectFit: "cover",
-                  }}
-                />
-              ))}
-            </div>
-          )}
+      <CardCategoryHomePage category="Cars" />
 
-          <p style={{ marginBottom: "1rem" }}>
-            <strong>Category:</strong> {review.category}
-          </p>
-          <p style={{ fontStyle: "italic", color: "gray" }}>
-            Created on: {new Date(review.created_at).toLocaleDateString()}
-          </p>
-
-          {/* Section des commentaires */}
-          {/* <CommentsSection reviewId={review.id} /> */}
-        </div>
-      ))}
-    </div>
+      <CardCategoryHomePage category="Electronics" />
+    </Box>
   );
 };
-
-// const CommentsSection = ({ reviewId }: { reviewId: string }) => {
-//   const { comments, isLoading, error } = useComments(reviewId);
-
-//   if (isLoading) return <p>Loading comments...</p>;
-//   if (error) return <p>Error: {error.message}</p>;
-
-//   return (
-//     <div>
-//       <h3>Comments:</h3>
-//       {comments?.length === 0 ? (
-//         <p>No comments yet.</p>
-//       ) : (
-//         comments?.map((comment) => (
-//           <div key={comment.id} style={{ marginBottom: "20px" }}>
-//             <p>
-//               <strong>User {comment.user_id}:</strong> {comment.content}
-//             </p>
-//             <p>
-//               👍 {comment.total_likes} | 👎 {comment.total_dislikes}
-//             </p>
-
-//             {/* Afficher les replies */}
-//             {comment.replies?.map((reply) => (
-//               <div
-//                 key={reply.id}
-//                 style={{
-//                   marginLeft: "20px",
-//                   borderLeft: "2px solid gray",
-//                   paddingLeft: "10px",
-//                 }}
-//               >
-//                 <p>
-//                   <strong>User {reply.user_id}:</strong> {reply.content}
-//                 </p>
-//                 <p>
-//                   👍 {reply.total_likes} | 👎 {reply.total_dislikes}
-//                 </p>
-//               </div>
-//             ))}
-//           </div>
-//         ))
-//       )}
-//     </div>
-// );
-// };
 
 export default Home;
