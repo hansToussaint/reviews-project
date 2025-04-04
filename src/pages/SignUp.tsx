@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useSignUp } from "../hooks/useAuthActions";
 import SpinnerMini from "../components/SpinnerMini";
@@ -12,6 +14,17 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (email.length < 6) {
+      toast.error("Email must be at least 6 characters long");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+
     mutateSignUp({ email, password, username });
   };
 

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Typography, IconButton, Button, Collapse } from "@mui/material";
+import toast from "react-hot-toast";
+
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
@@ -9,7 +11,6 @@ import theme from "../styles/Theme";
 import { Comment } from "../services/apiComments";
 import useProfile from "../hooks/useProfile";
 import { useAuth } from "../context/AuthContext";
-import toast from "react-hot-toast";
 
 interface CommentItemProps {
   comment: Comment;
