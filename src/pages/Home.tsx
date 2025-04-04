@@ -1,25 +1,35 @@
-import React from "react";
+import { useState } from "react";
 import { Box, Typography } from "@mui/material";
+
 import theme from "../styles/Theme";
 import CardCategoryHomePage from "../components/CardCategoryHomePage";
+
 const Home: React.FC = () => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   return (
     <Box>
-      {/* Main Image */}
+      {/* Main Image with Blur Effect */}
       <Box
         sx={{
           width: "100%",
           overflow: "hidden",
           maxHeight: "80vh",
+          position: "relative",
+          background: `url(/mainImage.jpg) center/cover no-repeat`,
+          filter: isImageLoaded ? "none" : "blur(10px)",
+          transition: "filter 1s ease-in-out",
         }}
       >
         <img
           src="/mainImage.jpg"
           alt="Main banner"
+          onLoad={() => setIsImageLoaded(true)}
           style={{
             width: "100%",
             display: "block",
             objectFit: "cover",
+            visibility: isImageLoaded ? "visible" : "hidden",
           }}
         />
       </Box>
@@ -40,9 +50,7 @@ const Home: React.FC = () => {
 
       {/* Section with categories */}
       <CardCategoryHomePage category="Beauty" />
-
       <CardCategoryHomePage category="Cars" />
-
       <CardCategoryHomePage category="Electronics" />
     </Box>
   );
