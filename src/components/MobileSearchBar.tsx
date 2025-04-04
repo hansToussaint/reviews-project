@@ -31,7 +31,7 @@ const MobileSearchBar: React.FC<MobileSearchBarProps> = ({ onClose }) => {
         width: "100%",
       }}
     >
-      <Search sx={{ mr: 1 }} />
+      <Search sx={{ mr: 1, color: theme.palette.common.black }} />
       <InputBase
         autoFocus
         placeholder="Search a review..."
