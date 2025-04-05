@@ -1,6 +1,13 @@
 import supabase from "./supabase";
 
 // Interfaces
+
+export interface CommentLike {
+  id: string;
+  user_id: string;
+  type: 1 | -1;
+}
+
 export interface Comment {
   id: string;
   user_id: string;
@@ -10,6 +17,7 @@ export interface Comment {
   created_at: string;
   total_likes?: number;
   total_dislikes?: number;
+  comment_likes?: CommentLike[]; // Ajouté pour stocker les likes/dislikes
   replies?: Comment[];
 }
 
@@ -33,7 +41,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
     .select(
       `
       id, user_id, content, parent_id, review_id, created_at,
-      comment_likes (type)
+      comment_likes (id, user_id, type)
     `
     )
     .eq("review_id", reviewId);
@@ -49,6 +57,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
     const totalLikes =
       comment.comment_likes?.filter((l: { type: number }) => l.type === 1)
         .length || 0;
+
     const totalDislikes =
       comment.comment_likes?.filter((l: { type: number }) => l.type === -1)
         .length || 0;
@@ -67,6 +76,7 @@ export async function fetchComments(reviewId: string): Promise<Comment[]> {
   commentsMap.forEach((comment) => {
     if (comment.parent_id) {
       const parent = commentsMap.get(comment.parent_id);
+
       if (parent) {
         parent.replies?.push(comment);
       }

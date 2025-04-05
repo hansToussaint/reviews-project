@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography, IconButton, Button, Collapse } from "@mui/material";
 import toast from "react-hot-toast";
 
@@ -54,6 +54,29 @@ const CommentItem: React.FC<CommentItemProps> = ({
     comment.total_dislikes || 0
   );
 
+  // initialize liked/disliked
+  useEffect(() => {
+    if (currentUser && comment.comment_likes) {
+      const userReaction = comment.comment_likes.find(
+        (like) => like.user_id === currentUser.user_id
+      );
+
+      if (userReaction) {
+        if (userReaction.type === 1) {
+          setLiked(true);
+          setDisliked(false);
+        } else if (userReaction.type === -1) {
+          setDisliked(true);
+          setLiked(false);
+        }
+      } else {
+        setLiked(false);
+        setDisliked(false);
+      }
+    }
+  }, [currentUser, comment.comment_likes]);
+
+  //
   const handleToggleLike = (type: 1 | -1) => {
     if (!currentUser) {
       toast.error("You need to sign in first to perform this action.");
@@ -69,13 +92,16 @@ const CommentItem: React.FC<CommentItemProps> = ({
           comment_id: comment.id,
           type: 1,
         });
+
         return;
       } else {
         setLiked(true);
+
         if (disliked) {
           setDisliked(false);
           setOptimisticDislikes((prev) => prev - 1);
         }
+
         setOptimisticLikes((prev) => prev + 1);
         onToggleLike({
           user_id: currentUser.user_id,
@@ -92,13 +118,16 @@ const CommentItem: React.FC<CommentItemProps> = ({
           comment_id: comment.id,
           type: -1,
         });
+
         return;
       } else {
         setDisliked(true);
+
         if (liked) {
           setLiked(false);
           setOptimisticLikes((prev) => prev - 1);
         }
+
         setOptimisticDislikes((prev) => prev + 1);
         onToggleLike({
           user_id: currentUser.user_id,
